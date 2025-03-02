@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Reports - RAAS</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script>
+        async function updateStatus(reportId, newStatus) {
+            const response = await fetch('/update_status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ report_id: reportId, status: newStatus })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                location.reload(); // Reload page to reflect status update
+            } else {
+                alert('Failed to update status');
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-blue-600 text-white shadow-lg p-4">
+        <div class="container mx-auto flex justify-between">
+            <span class="text-2xl font-bold">RAAS</span>
+            <a href="{{ url_for('dashboard') }}" class="text-white">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6 py-8">
+        <h2 class="text-2xl font-bold mb-4">Your Reports</h2>
+
+        {% if reports %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for report in reports %}
+                    <div class="bg-white p-4 shadow-lg rounded-lg">
+                        <h3 class="text-lg font-semibold">Report #{{ loop.index }}</h3>
+                        <p><strong>Location:</strong> {{ report.location }}</p>
+                        <p><strong>Type:</strong> {{ report.incident_type }}</p>
+                        <p><strong>Severity:</strong> {{ report.severity }}</p>
+                        <p><strong>Status:</strong> 
+                            <span id="status-{{ report._id }}" class="font-bold {% if report.status == 'resolved' %}text-green-600{% else %}text-yellow-600{% endif %}">
+                                {{ report.status }}
+                            </span>
+                        </p>
+                        <p class="text-sm text-gray-500 mt-2">{{ report.description }}</p>
+
+                        <!-- Buttons to change status -->
+                        <button onclick="updateStatus('{{ report._id }}', 'resolved')" class="bg-green-500 text-white px-4 py-2 rounded mt-2">
+                            Solved
+                        </button>
+                        <button onclick="updateStatus('{{ report._id }}', 'unresolved')" class="bg-red-500 text-white px-4 py-2 rounded mt-2">
+                            Not Solved
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No reports found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Accident Alert System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-2xl font-bold">RAAS</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#services" class="hover:text-blue-200">Services</a>
+                <a href="#about" class="hover:text-blue-200">About</a>
+                <a href="#contact" class="hover:text-blue-200">Contact</a>
+                <div class="space-x-4">
+                    <a href="/login" class="bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100">Login</a>
+                    <a href="/register" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative bg-blue-600 h-screen">
+        <div class="absolute inset-0">
+            <img src="/api/placeholder/1920/1080" alt="Emergency Response" class="w-full h-full object-cover opacity-20">
+        </div>
+        <div class="relative container mx-auto px-6 py-32 text-center">
+            <h1 class="text-5xl font-bold text-white mb-8">
+                Quick Emergency Response System
+            </h1>
+            <p class="text-xl text-white mb-12 max-w-2xl mx-auto">
+                Connecting citizens with emergency services in real-time. Report accidents instantly and save lives.
+            </p>
+            <div class="space-x-6">
+                <a href="/register" class="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-50">
+                    Report Accident
+                </a>
+                <a href="#services" class="border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-500">
+                    Emergency Services
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">Emergency Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Police Service -->
+                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Police Response</h3>
+                    <p class="text-gray-600">Immediate police assistance for accident scenes and traffic management.</p>
+                </div>
+
+                <!-- Ambulance Service -->
+                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Medical Emergency</h3>
+                    <p class="text-gray-600">Quick medical response with trained professionals and equipped ambulances.</p>
+                </div>
+
+                <!-- Fire Service -->
+                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Fire Brigade</h3>
+                    <p class="text-gray-600">Specialized fire and rescue services for critical situations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">About RAAS</h4>
+                    <p class="text-gray-400">Dedicated to providing quick emergency response and saving lives through technology.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Home</a></li>
+                        <li><a href="#" class="hover:text-white">Services</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Emergency Numbers</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Police: 100</li>
+                        <li>Ambulance: 108</li>
+                        <li>Fire: 101</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Email: support@raas.com</li>
+                        <li>Phone: 1800-XXX-XXXX</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

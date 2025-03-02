@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Department Dashboard - RAAS</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Fire Department Navigation -->
+    <nav class="bg-red-700 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-8">
+                    <span class="text-2xl font-bold text-white">RAAS - Fire Department Portal</span>
+                    <div class="hidden md:flex space-x-4">
+                        <a href="#" class="text-white hover:text-yellow-200">Dashboard</a>
+                        <a href="#" class="text-white hover:text-yellow-200">Emergency Calls</a>
+                        <a href="#" class="text-white hover:text-yellow-200">Resources</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-white text-sm">Unit ID: F456</span>
+                    <a href="/logout">
+                        <button class="bg-red-800 text-white px-4 py-2 rounded-lg hover:bg-red-900">
+                            Logout
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Fire Department Main Content -->
+    <div class="container mx-auto px-6 py-8">
+        <!-- Emergency Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="bg-red-100 p-3 rounded-full">
+                        <i class="fas fa-fire text-red-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-700">Active Fires</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ reports | length }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-truck text-yellow-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-700">Available Units</p>
+                        <p id="teamsCount" class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-700">Active Teams</p>
+                        <p id="teamsCount" class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Response Queue -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Emergency Response Queue</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Call ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% if reports %}
+                            {% for report in reports %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ report._id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ report.location }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ report.incident_type }}</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-2 py-1 rounded-full text-sm {% if report.severity == 'High' %}bg-red-100 text-red-800{% elif report.severity == 'Medium' %}bg-yellow-100 text-yellow-800{% else %}bg-green-100 text-green-800{% endif %}">
+                                        {{ report.severity }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-gray-900">{{ report.status }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">No active emergency calls</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Active Teams Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-900">Fire Response Teams</h2>
+                <button id="addTeamBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                    Add Team
+                </button>
+            </div>
+
+            <!-- Teams List -->
+            <div id="teamsList" class="space-y-4"></div>
+
+            <!-- Add Team Modal -->
+            <div id="addTeamModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex justify-center items-center">
+                <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-900">Add New Fire Team</h2>
+            
+                    <label class="block text-gray-700">Team Name:</label>
+                    <input id="teamName" type="text" class="w-full px-3 py-2 border rounded-lg mb-4" placeholder="Enter team name">
+            
+                    <label class="block text-gray-700">Number of Firefighters:</label>
+                    <input id="numFirefighters" type="number" class="w-full px-3 py-2 border rounded-lg mb-4" placeholder="Enter number of firefighters">
+
+                    <label class="block text-gray-700">Vehicle Type:</label>
+                    <select id="vehicleType" class="w-full px-3 py-2 border rounded-lg mb-4 text-gray-700">
+                        <option value="fire_engine">Fire Engine</option>
+                        <option value="ladder_truck">Ladder Truck</option>
+                        <option value="rescue_unit">Rescue Unit</option>
+                        <option value="water_tanker">Water Tanker</option>
+                    </select>
+            
+                    <div class="flex justify-end space-x-2">
+                        <button id="closeModal" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">Cancel</button>
+                        <button id="saveTeam" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Team Management Functions
+        function loadTeams() {
+            fetch('/get_fire_teams')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const teamsList = document.getElementById('teamsList');
+                        const teamsCount = document.getElementById('teamsCount');
+                        teamsList.innerHTML = '';
+                        
+                        data.teams.forEach(team => {
+                            const teamElement = document.createElement('div');
+                            teamElement.className = 'border-l-4 border-red-500 pl-4 py-3';
+                            teamElement.innerHTML = `
+                                <p class="font-medium text-gray-900">${team.team_name}</p>
+                                <p class="text-sm text-gray-700">Firefighters: ${team.num_firefighters}</p>
+                                <p class="text-sm text-gray-700">Vehicle: ${team.vehicle_type}</p>
+                                <p class="text-sm text-gray-700">Status: ${team.status}</p>
+                            `;
+                            teamsList.appendChild(teamElement);
+                        });
+
+                        // Update teams count
+                        teamsCount.textContent = data.teams.length;
+                    }
+                })
+                .catch(error => console.error('Error loading teams:', error));
+        }
+
+        // Modal Management
+        const modal = document.getElementById('addTeamModal');
+        const addTeamBtn = document.getElementById('addTeamBtn');
+        const closeModal = document.getElementById('closeModal');
+        const saveTeam = document.getElementById('saveTeam');
+
+        addTeamBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        saveTeam.addEventListener('click', () => {
+            const teamData = {
+                team_name: document.getElementById('teamName').value,
+                num_firefighters: parseInt(document.getElementById('numFirefighters').value),
+                vehicle_type: document.getElementById('vehicleType').value
+            };
+
+            if (!teamData.team_name || !teamData.num_firefighters || !teamData.vehicle_type) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            fetch('/add_fire_team', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(teamData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    modal.classList.add('hidden');
+                    loadTeams();
+                    // Clear form
+                    document.getElementById('teamName').value = '';
+                    document.getElementById('numFirefighters').value = '';
+                    document.getElementById('vehicleType').value = 'fire_engine';
+                } else {
+                    alert(data.error || 'Failed to add team');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding team:', error);
+                alert('Failed to add team');
+            });
+        });
+
+        // Call loadTeams when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTeams();
+        });
+
+        // Refresh teams every 30 seconds
+        setInterval(loadTeams, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Police Dashboard - RAAS</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Police Navigation -->
+    <nav class="bg-blue-800 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-8">
+                    <span class="text-2xl font-bold">RAAS - Police Portal</span>
+                    <div class="hidden md:flex space-x-4">
+                        <a href="#" class="hover:text-blue-200">Dashboard</a>
+                        <a href="#" class="hover:text-blue-200">Incidents</a>
+                        <a href="#" class="hover:text-blue-200">Reports</a>
+                        <a href="#" class="hover:text-blue-200">Teams</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm">Officer ID: P12345</span>
+                    <a href="/logout"><button class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                        Logout
+                    </button></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Police Main Content -->
+    <div class="container mx-auto px-6 py-8">
+        <!-- Status Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="bg-red-100 p-3 rounded-full">
+                        <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">Active Incidents</p>
+                        <p class="text-2xl font-bold">{{ reports | length }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">Pending Response</p>
+                        <p class="text-2xl font-bold">{{ reports | selectattr('status', 'equalto', 'pending') | list | length }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">Resolved Today</p>
+                        <p class="text-2xl font-bold">{{ reports | selectattr('status', 'equalto', 'resolved') | list | length }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">Teams Deployed</p>
+                        <p id="teamsCount" class="text-2xl font-bold">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Incidents Table -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Active Incidents</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Report ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="reportsTableBody">
+                        {% for report in reports %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ report._id }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ report.location }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ report.description }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ report.status }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ report.time }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Incident Map Placeholder -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Incident Map</h2>
+                <div class="bg-gray-200 h-96 rounded-lg">
+                    <div class="w-full h-full flex items-center justify-center text-gray-500">
+                        Interactive Map View
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Teams -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Active Teams</h2>
+                    <button id="addTeamBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500">
+                        Add Team
+                    </button>
+                </div>
+
+                <!-- Teams List -->
+                <div id="teamsList" class="space-y-4"></div>
+
+                <!-- Add Team Modal -->
+                <div id="addTeamModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex justify-center items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                        <h2 class="text-xl font-semibold mb-4">Add New Team</h2>
+                
+                        <label class="block text-gray-700">Team Name:</label>
+                        <input id="teamName" type="text" class="w-full px-3 py-2 border rounded-lg mb-4">
+                
+                        <label class="block text-gray-700">Number of Officers:</label>
+                        <input id="numOfficers" type="number" class="w-full px-3 py-2 border rounded-lg mb-4">
+                
+                        <div class="flex justify-end space-x-2">
+                            <button id="closeModal" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-400">Cancel</button>
+                            <button id="saveTeam" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Team Management Functions
+        function loadTeams() {
+            fetch('/get_teams')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const teamsList = document.getElementById('teamsList');
+                        const teamsCount = document.getElementById('teamsCount');
+                        teamsList.innerHTML = '';
+                        
+                        data.teams.forEach(team => {
+                            const teamElement = document.createElement('div');
+                            teamElement.className = 'border-l-4 border-blue-500 pl-4 py-3';
+                            teamElement.innerHTML = `
+                                <p class="font-medium">${team.team_name}</p>
+                                <p class="text-sm text-gray-600">Officers: ${team.num_officers}</p>
+                                <p class="text-sm text-gray-600">Status: ${team.status}</p>
+                            `;
+                            teamsList.appendChild(teamElement);
+                        });
+
+                        // Update teams count
+                        teamsCount.textContent = data.teams.length;
+                    }
+                })
+                .catch(error => console.error('Error loading teams:', error));
+        }
+
+        // Modal Management
+        const modal = document.getElementById('addTeamModal');
+        const addTeamBtn = document.getElementById('addTeamBtn');
+        const closeModal = document.getElementById('closeModal');
+        const saveTeam = document.getElementById('saveTeam');
+
+        addTeamBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        saveTeam.addEventListener('click', () => {
+            const teamData = {
+                team_name: document.getElementById('teamName').value,
+                num_officers: parseInt(document.getElementById('numOfficers').value)
+            };
+
+            if (!teamData.team_name || !teamData.num_officers) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            fetch('/add_team', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(teamData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    modal.classList.add('hidden');
+                    loadTeams();
+                    // Clear form
+                    document.getElementById('teamName').value = '';
+                    document.getElementById('numOfficers').value = '';
+                } else {
+                    alert(data.error || 'Failed to add team');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding team:', error);
+                alert('Failed to add team');
+            });
+        });
+
+        // Load teams when page loads
+        document.addEventListener('DOMContentLoaded', loadTeams);
+    </script>
+</body>
+</html>

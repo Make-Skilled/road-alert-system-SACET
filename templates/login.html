@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - RAAS</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+
+</head>
+<body class="bg-gray-100">
+    <!-- Common Navigation -->
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center">
+                <a href="/" class="text-2xl font-bold">RAAS</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Container -->
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <!-- Tab Navigation -->
+        <div class="max-w-md w-full space-y-8">
+            <div class="bg-white p-6 rounded-t-xl shadow-lg">
+                <div class="flex justify-around">
+                    <button onclick="showLogin('user')" class="px-4 py-2 text-sm font-medium rounded-lg focus:outline-none tab-active" id="userTab">
+                        User Login
+                    </button>
+                    <button onclick="showLogin('police')" class="px-4 py-2 text-sm font-medium rounded-lg focus:outline-none" id="policeTab">
+                        Police
+                    </button>
+                    <button onclick="showLogin('ambulance')" class="px-4 py-2 text-sm font-medium rounded-lg focus:outline-none" id="ambulanceTab">
+                        Ambulance
+                    </button>
+                    <button onclick="showLogin('fire')" class="px-4 py-2 text-sm font-medium rounded-lg focus:outline-none" id="fireTab">
+                        Fire Brigade
+                    </button>
+                </div>
+            </div>
+
+            <!-- Login Forms -->
+            <div class="bg-white p-8 rounded-b-xl shadow-lg">
+                <!-- User Login Form -->
+                <form id="userLogin" action="/login" method="post" class="login-form space-y-6">
+                    <div>
+                        <h2 class="text-center text-2xl font-bold text-gray-900 mb-8">User Login</h2>
+                        <label for="user-email" class="sr-only">Email address</label>
+                        <input id="user-email" name="email" type="email" required class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Email address">
+                    </div>
+                    <div>
+                        <label for="user-password" class="sr-only">Password</label>
+                        <input id="user-password" name="password" type="password" required class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Password">
+                    </div>
+                    <div>
+                        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Sign in
+                        </button>
+                    </div>
+                    <div class="text-sm text-center">
+                        <a href="/register" class="font-medium text-blue-600 hover:text-blue-500">
+                            Don't have an account? Register
+                        </a>
+                    </div>
+                </form>
+
+                <!-- Police Login Form -->
+                <form id="policeLogin" action="/login" method="post" class="login-form space-y-6 hidden">
+                    <div>
+                        <h2 class="text-center text-2xl font-bold text-gray-900 mb-8">Police Login</h2>
+                        <label for="police-id" class="sr-only">Police ID</label>
+                        <input id="police-id" name="email" type="text" required class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Police ID">
+                    </div>
+                    <div>
+                        <label for="police-password" class="sr-only">Password</label>
+                        <input id="police-password" name="password" type="password" required class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Password">
+                    </div>
+                    <div>
+                        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Sign in
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Ambulance Login Form -->
+                <form id="ambulanceLogin" action="/login" method="post" class="login-form space-y-6 hidden">
+                    <div>
+                        <h2 class="text-center text-2xl font-bold text-gray-900 mb-8">Ambulance Service Login</h2>
+                        <label for="ambulance-id" class="sr-only">Ambulance ID</label>
+                        <input id="ambulance-id" name="email" type="text" required class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ambulance ID">
+                    </div>
+                    <div>
+                        <label for="ambulance-password" class="sr-only">Password</label>
+                        <input id="ambulance-password" name="password" type="password" required class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Password">
+                    </div>
+                    <div>
+                        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Sign in
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Fire Brigade Login Form -->
+                <form id="fireLogin" action="/login" method="post" class="login-form space-y-6 hidden">
+                    <div>
+                        <h2 class="text-center text-2xl font-bold text-gray-900 mb-8">Fire Brigade Login</h2>
+                        <label for="fire-id" class="sr-only">Fire Brigade ID</label>
+                        <input id="fire-id" name="email" type="text" required class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Fire Brigade ID">
+                    </div>
+                    <div>
+                        <label for="fire-password" class="sr-only">Password</label>
+                        <input id="fire-password" name="password" type="password" required class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Password">
+                    </div>
+                    <div>
+                        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Sign in
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLogin(type) {
+            // Hide all forms
+            document.querySelectorAll('.login-form').forEach(form => {
+                form.classList.add('hidden');
+            });
+            
+            // Show selected form
+            document.getElementById(type + 'Login').classList.remove('hidden');
+            
+            // Update tab styling
+            document.querySelectorAll('button').forEach(button => {
+                button.classList.remove('bg-blue-600', 'text-white');
+            });
+            document.getElementById(type + 'Tab').classList.add('bg-blue-600', 'text-white');
+        }
+
+        // Initialize with user login shown
+        showLogin('user');
+    </script>
+</body>
+</html>
